@@ -36,3 +36,70 @@ print("Server:", reply)
 conn.send(reply.encode())
 conn.close()
 server.close()
+
+
+
+Client
+
+import socket
+client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client.connect(("127.0.0.1", 5000))
+print("TCP Mathematical Operations")
+print("1. Addition")
+print("2. Subtraction")
+print("3. Multiplication")
+print("4. Division")
+choice = input("Enter your choice: ")
+a = input("Enter first number: ")
+b = input("Enter second number: ")
+if choice == "1":
+    op = "+"
+elif choice == "2":
+    op = "-"
+elif choice == "3":
+    op = "*"
+elif choice == "4":
+    op = "/"
+else:
+    print("Invalid choice")
+    client.close()
+    exit()
+data = a + " " + b + " " + op
+client.send(data.encode())
+result = client.recv(1024).decode()
+print("Result from server:", result)
+client.close()
+
+
+Server
+import socket
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server.bind(("127.0.0.1", 5000))
+server.listen(1)
+print("Server started")
+print("Waiting for client...")
+conn, addr = server.accept()
+print("Client connected")
+data = conn.recv(1024).decode()
+a, b, op = data.split()
+a = float(a)
+b = float(b)
+if op == "+":
+    result = a + b
+elif op == "-":
+    result = a - b
+elif op == "*":
+    result = a * b
+elif op == "/":
+    if b == 0:
+        result = "Cannot divide by zero"
+    else:
+        result = a / b
+else:
+    result = "Invalid operation"
+print("Calculation:", a, op, b)
+print("Result:", result)
+conn.send(str(result).encode())
+conn.close()
+server.close()
+
