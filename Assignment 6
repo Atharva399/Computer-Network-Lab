@@ -1,0 +1,157 @@
+Code1
+Client
+import socket
+# Server configuration
+SERVER_IP = "127.0.0.1"
+SERVER_PORT = 5000
+# Create UDP socket
+client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+print("===================================")
+print("       UDP CLIENT STARTED")
+print("===================================")
+# Take input from user
+message = input("Enter an uppercase string: ")
+# Send message to server
+client_socket.sendto(
+    message.encode(),
+    (SERVER_IP, SERVER_PORT)
+)
+print()
+print("Message sent successfully to server.")
+# Receive response from server
+data, server_address = client_socket.recvfrom(1024)
+# Convert bytes to string
+result = data.decode()
+print(f"Server Address : {server_address}")
+print(f"Original       : {message}")
+print(f"Lowercase      : {result}")
+# Close socket
+client_socket.close()
+print()
+print("Client socket closed.")
+
+Server
+import socket
+# Server configuration
+HOST = "127.0.0.1"
+PORT = 5000
+# Create UDP socket
+server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+# Bind socket to IP address and port
+server_socket.bind((HOST, PORT))
+print("===================================")
+print("       UDP SERVER STARTED")
+print("===================================")
+print(f"Server IP   : {HOST}")
+print(f"Server Port : {PORT}")
+print("Waiting for message from client...")
+print()
+# Receive message from client
+data, client_address = server_socket.recvfrom(1024)
+# Convert bytes to string
+message = data.decode()
+print(f"Client Address : {client_address}")
+print(f"Received       : {message}")
+# Convert uppercase to lowercase
+result = message.lower()
+print(f"Converted      : {result}")
+# Send result back to client
+server_socket.sendto(result.encode(), client_address)
+print()
+print("Result sent successfully to client.")
+# Close socket
+server_socket.close()
+print("Server socket closed.")
+
+
+
+
+Code 2
+Client 
+import socket
+
+# Server configuration
+SERVER_IP = "127.0.0.1"
+SERVER_PORT = 5000
+
+# Create UDP socket
+client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+print("===================================")
+print("       UDP CLIENT STARTED")
+print("===================================")
+
+# Take input from user
+message = input("Enter a string: ")
+
+# Send message to server
+client_socket.sendto(
+    message.encode(),
+    (SERVER_IP, SERVER_PORT)
+)
+
+print()
+print("Message sent successfully to server.")
+
+# Receive response from server
+data, server_address = client_socket.recvfrom(1024)
+
+# Convert bytes to string
+result = data.decode()
+
+print(f"Server Address : {server_address}")
+print(f"Original       : {message}")
+print(f"Reversed       : {result}")
+
+# Close socket
+client_socket.close()
+
+print()
+print("Client socket closed.")
+
+
+Server
+import socket
+
+# Server configuration
+HOST = "127.0.0.1"
+PORT = 5000
+
+# Create UDP socket
+server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+# Bind socket to IP address and port
+server_socket.bind((HOST, PORT))
+
+print("===================================")
+print("       UDP SERVER STARTED")
+print("===================================")
+print(f"Server IP   : {HOST}")
+print(f"Server Port : {PORT}")
+print("Waiting for message from client...")
+print()
+
+# Receive message from client
+data, client_address = server_socket.recvfrom(1024)
+
+# Convert bytes to string
+message = data.decode()
+
+print(f"Client Address : {client_address}")
+print(f"Received       : {message}")
+
+# Reverse the string
+result = message[::-1]
+
+print(f"Reversed       : {result}")
+
+# Send reversed string back to client
+server_socket.sendto(result.encode(), client_address)
+
+print()
+print("Reversed string sent successfully to client.")
+
+# Close socket
+server_socket.close()
+
+print("Server socket closed.")
